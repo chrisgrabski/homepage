@@ -164,6 +164,9 @@
          Tekst może rosnąć w dół (powiększenie, zawinięcie) i nic nad nim nie skacze. */
       grid-template-rows: var(--logo);
       align-items: start;
+      /* Hidden dropdown menus can stick out past the right edge on phones, which
+         widens the layout viewport and pushes the fixed corner buttons off-screen. */
+      overflow-x: clip;
     }
 
     .logo {
@@ -572,7 +575,7 @@
       color: var(--fg);
       opacity: 0;
       pointer-events: none;
-      transform-origin: 140% 160%;
+      transform-origin: 100% 100%;
       transform: rotate(18deg) scale(.8);
       transition:
         transform .55s cubic-bezier(.34, 1.56, .64, 1),
