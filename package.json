@@ -4,6 +4,10 @@
   "type": "module",
   "scripts": {
     "build": "node build.mjs",
-    "images": "node src/make_images.mjs"
+    "images": "node src/make_images.mjs",
+    "fonts": "node src/make_fonts.mjs"
+  },
+  "devDependencies": {
+    "subset-font": "^2.9.0"
   }
 }
