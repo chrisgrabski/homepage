@@ -1,0 +1,903 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Christopher Grabski — Software Architect, Fullstack &amp; DevOps</title>
+  <meta name="description" content="Software architect, fullstack developer and DevOps engineer. SPA apps, web3 and websites with Next.js, React and NestJS, running on AWS. Get in touch.">
+  <meta name="author" content="Christopher Grabski">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://chrisgrabski.github.io/homepage/">
+  <link rel="alternate" hreflang="en" href="https://chrisgrabski.github.io/homepage/">
+  <link rel="alternate" hreflang="pl" href="https://chrisgrabski.github.io/homepage/pl/">
+  <link rel="alternate" hreflang="x-default" href="https://chrisgrabski.github.io/homepage/">
+  <link rel="icon" type="image/svg+xml" href="kg.svg">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <meta name="theme-color" content="#f4f4f2" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#1d1c1a" media="(prefers-color-scheme: dark)">
+  <meta property="og:type" content="profile">
+  <meta property="og:site_name" content="Christopher Grabski">
+  <meta property="og:title" content="Christopher Grabski — Software Architect, Fullstack &amp; DevOps">
+  <meta property="og:description" content="Software architect, fullstack developer and DevOps engineer. SPA apps, web3 and websites with Next.js, React and NestJS, running on AWS. Get in touch.">
+  <meta property="og:url" content="https://chrisgrabski.github.io/homepage/">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:locale:alternate" content="pl_PL">
+  <meta property="og:image" content="https://chrisgrabski.github.io/homepage/og-en.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Christopher Grabski — software architect, fullstack, devops">
+  <meta property="profile:first_name" content="Christopher">
+  <meta property="profile:last_name" content="Grabski">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Christopher Grabski — Software Architect, Fullstack &amp; DevOps">
+  <meta name="twitter:description" content="Software architect, fullstack developer and DevOps engineer. SPA apps, web3 and websites with Next.js, React and NestJS, running on AWS. Get in touch.">
+  <meta name="twitter:image" content="https://chrisgrabski.github.io/homepage/og-en.png">
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "ProfilePage", "url": "https://chrisgrabski.github.io/homepage/", "inLanguage": "en", "mainEntity": {"@type": "Person", "name": "Christopher Grabski", "url": "https://chrisgrabski.github.io/homepage/", "image": "https://chrisgrabski.github.io/homepage/og-en.png", "jobTitle": "Software Architect", "email": "mailto:chris.grabski.dev@gmail.com", "telephone": "+48517499860", "address": {"@type": "PostalAddress", "addressCountry": "PL"}, "knowsAbout": ["Software architecture", "Fullstack development", "DevOps", "SPA", "Web3", "Next.js", "React", "NestJS", "Express", "JavaScript", "AWS", "CI/CD", "Docker", "Monitoring", "DNS"], "knowsLanguage": ["pl", "en"]}}</script>
+  <script>
+    // Ustawiamy motyw przed renderem, żeby nie mignął zły kolor.
+    try {
+      const t = localStorage.getItem("theme");
+      if (t === "light" || t === "dark") document.documentElement.dataset.theme = t;
+    } catch (e) {}
+    // Language: / is English, /pl/ is Polish. Redirect to /pl/ only when "pl" is
+    // the saved choice or, with no saved choice, when the browser locale is pl.
+    {
+      let l = null;
+      try { l = localStorage.getItem("lang"); } catch (e) {}
+      const wantPl = l ? l === "pl" : (navigator.language || "").toLowerCase().startsWith("pl");
+      if (wantPl && !/bot|crawl|spider|slurp|preview/i.test(navigator.userAgent)) {
+        location.replace("pl/" + location.search + location.hash);
+      }
+    }
+    // Intro tylko przy wejściu na stronę. Zwykłe przeładowanie (F5) i powrót wstecz
+    // je pomijają, twarde przeładowanie (Ctrl+Shift+R) odgrywa je znowu.
+    // Rozpoznajemy je po tym, że HTML przyszedł w całości z sieci, a nie z cache
+    // (przy F5 serwer odpowiada 304 i transferSize < encodedBodySize).
+    try {
+      const nav = performance.getEntriesByType("navigation")[0];
+      const repeat = nav && (nav.type === "reload" || nav.type === "back_forward");
+      const fromNetwork = nav && nav.transferSize > 0 && nav.transferSize >= nav.encodedBodySize;
+      if (repeat && !fromNetwork) document.documentElement.classList.add("no-intro");
+    } catch (e) {}
+  </script>
+  <style>
+    @font-face {
+      font-family: "JetBrainsMono NF";
+      src: local("JetBrainsMono Nerd Font"), local("JetBrainsMonoNerdFont-Regular"),
+           url("fonts/JetBrainsMonoNerdFont-Regular.ttf") format("truetype");
+      font-weight: 400;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: "JetBrainsMono NF";
+      src: local("JetBrainsMono Nerd Font Bold"), local("JetBrainsMonoNerdFont-Bold"),
+           url("fonts/JetBrainsMonoNerdFont-Bold.ttf") format("truetype");
+      font-weight: 700;
+      font-display: swap;
+    }
+
+    :root {
+      color-scheme: light;
+      --bg: #f4f4f2;
+      --fg: #2b2a27;
+      --muted: #6c6a65;
+      --accent: #c2410c;     /* palona pomarańcz — na jasnym tle */
+      --accent-inv: #fb923c; /* jasna pomarańcz — na odwróconym (ciemnym) panelu */
+      --logo: clamp(64px, 18vmin, 190px);
+      --ease: cubic-bezier(.22, 1, .36, 1);
+    }
+    /* Domyślnie motyw systemowy; data-theme na <html> nadpisuje go ręcznie. */
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) {
+        color-scheme: dark;
+        --bg: #1d1c1a;
+        --fg: #e8e6e1;
+        --muted: #9b9891;
+        --accent: #fb923c;
+        --accent-inv: #c2410c;
+      }
+    }
+    :root[data-theme="dark"] {
+      color-scheme: dark;
+      --bg: #1d1c1a;
+      --fg: #e8e6e1;
+      --muted: #9b9891;
+      --accent: #fb923c;
+      --accent-inv: #c2410c;
+    }
+    @media (max-width: 600px) {
+      :root { --logo: clamp(56px, 19vw, 110px); }
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    ::selection { background: var(--accent); color: var(--bg); }
+
+    html, body { height: 100%; }
+
+    body {
+      background: var(--bg);
+      color: var(--fg);
+      font-family: "JetBrainsMono NF", "JetBrainsMono Nerd Font", "JetBrains Mono", monospace;
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+      padding: 0 16px;
+      -webkit-font-smoothing: antialiased;
+      transition: background-color .4s, color .4s;
+    }
+
+    .controls {
+      position: fixed;
+      top: 16px;
+      right: 16px;
+      z-index: 10;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      animation: drop-in .6s cubic-bezier(.34, 1.56, .64, 1) 2.4s both;
+    }
+
+    .lang {
+      display: flex;
+      align-items: center;
+      height: 40px;
+      padding: 0 6px;
+      border: 1px solid color-mix(in srgb, var(--fg) 15%, transparent);
+      border-radius: 20px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+    .lang .sep { opacity: .5; }
+    .lang a {
+      padding: 4px 6px;
+      color: inherit;
+      text-decoration: none;
+      transition: color .25s;
+    }
+    .lang a:hover,
+    .lang a:focus-visible { color: var(--fg); outline: none; }
+    .lang a[aria-current="page"] { color: var(--fg); font-weight: 700; }
+
+    .theme-toggle {
+      display: grid;
+      place-items: center;
+      width: 40px;
+      height: 40px;
+      border: 1px solid color-mix(in srgb, var(--fg) 15%, transparent);
+      border-radius: 50%;
+      background: transparent;
+      color: var(--muted);
+      cursor: pointer;
+      transition: color .25s, border-color .25s, transform .25s var(--ease);
+    }
+    .theme-toggle:hover,
+    .theme-toggle:focus-visible {
+      color: var(--fg);
+      border-color: color-mix(in srgb, var(--fg) 40%, transparent);
+      outline: none;
+    }
+    .theme-toggle:active { transform: scale(.92); }
+    .theme-toggle svg {
+      grid-area: 1 / 1;
+      width: 18px;
+      height: 18px;
+      transition: transform .5s cubic-bezier(.34, 1.56, .64, 1), opacity .3s;
+    }
+    /* W jasnym motywie widać księżyc (przełącz na ciemny), w ciemnym — słońce. */
+    .theme-toggle .sun  { opacity: 0; transform: rotate(-90deg) scale(.5); }
+    .theme-toggle .moon { opacity: 1; transform: none; }
+    :root[data-theme="dark"] .theme-toggle .sun { opacity: 1; transform: none; }
+    :root[data-theme="dark"] .theme-toggle .moon { opacity: 0; transform: rotate(90deg) scale(.5); }
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) .theme-toggle .sun { opacity: 1; transform: none; }
+      :root:not([data-theme="light"]) .theme-toggle .moon { opacity: 0; transform: rotate(90deg) scale(.5); }
+    }
+
+    /* Układ jest docelowy od początku: logo wjeżdża prosto na swoje miejsce,
+       a tekst wysuwa się spod niego w przyciętej kolumnie obok. */
+    main {
+      display: grid;
+      grid-template-columns: auto auto;
+      /* Wiersz ma wysokość logo, więc na środku ekranu stoi logo, a nie cały blok.
+         Tekst może rosnąć w dół (powiększenie, zawinięcie) i nic nad nim nie skacze. */
+      grid-template-rows: var(--logo);
+      align-items: start;
+    }
+
+    .logo {
+      position: relative;
+      z-index: 1;
+      width: calc(var(--logo) * .943);
+      height: var(--logo);
+      color: var(--fg);
+      transform: translateX(100vw);
+      animation: from-right 1.1s var(--ease) .2s forwards;
+    }
+    .logo path { fill: currentColor; }
+
+    /* Paralaksa: --mx/--my (-1…1) ustawia skrypt na podstawie pozycji myszy.
+       Całe logo przechyla się w 3D, a obie części przesuwają się
+       o różną „głębokość”. */
+    .mark {
+      display: block;
+      width: 100%;
+      height: 100%;
+      overflow: visible;
+      transform:
+        perspective(600px)
+        rotateY(calc(var(--mx, 0) * 14deg))
+        rotateX(calc(var(--my, 0) * -14deg))
+        translate(calc(var(--mx, 0) * 6px), calc(var(--my, 0) * 6px));
+      will-change: transform;
+    }
+    .mark .bar { transform: translate(calc(var(--mx, 0) * -2.5px), calc(var(--my, 0) * -2.5px)); }
+    .mark .g   { transform: translate(calc(var(--mx, 0) * 2.5px),  calc(var(--my, 0) * 2.5px)); }
+
+    /* Przycinamy tylko lewą krawędź (tekst wysuwa się spod logo),
+       żeby dropdown mógł wychodzić w dół i w prawo. */
+    .reveal {
+      min-width: 0;
+      clip-path: inset(-100vh -100vw -100vh 0);
+    }
+
+    .text {
+      width: max-content;
+      padding-left: calc(var(--logo) * .16);
+      transform: translateX(-100%);
+      animation: slide-out 1s var(--ease) 1.4s forwards;
+    }
+
+    .name {
+      font-weight: 700;
+      font-size: calc(var(--logo) * .3);
+      line-height: 1;
+      letter-spacing: -0.02em;
+      white-space: nowrap;
+      margin-top: -0.12em; /* wyrównanie wersalików do górnej krawędzi logo */
+    }
+
+    /* Podtytuł nie zawija się (na szerokich ekranach) i nie wpływa na szerokość
+       kolumny (width: 0), tylko z niej wystaje. Powiększony napis rozpycha więc
+       linię w prawo, a nic innego — wysokość, wyśrodkowanie, kontakt — się nie rusza. */
+    .role {
+      width: 0;
+      min-width: 100%;
+      white-space: nowrap;
+      margin-top: calc(var(--logo) * .12);
+      --role-size: max(11px, calc(var(--logo) * .095));
+      font-size: var(--role-size);
+      /* Wysokość linii w jednostkach bezwzględnych — powiększony napis jej nie zmienia. */
+      line-height: calc(var(--role-size) * 1.5);
+      color: var(--muted);
+      letter-spacing: .01em;
+    }
+    .role .sep { opacity: .5; }
+    /* Stała wysokość jednej linii — powiększony napis (inny rozmiar fontu
+       w tej samej linii) nie podniesie jej nawet o piksel. */
+    @media (min-width: 601px) {
+      .role { height: calc(var(--role-size) * 1.5); }
+    }
+    @media (max-width: 600px) {
+      .role { white-space: normal; }
+    }
+
+    /* „architekt oprogramowania” — powiększa się po najechaniu
+       i wysuwa listę po łuku („bananem”) z lekkim przestrzeleniem. */
+    .item {
+      position: relative;
+      display: inline-block;
+      cursor: default;
+      outline: none;
+      transition: font-size .35s var(--ease), color .25s;
+    }
+    .item:hover,
+    .item:focus-within {
+      font-size: 1.18em;
+      color: var(--fg);
+    }
+    /* Na dotykowych bez powiększania — tam podtytuł się zawija i by skakał. */
+    @media (hover: none) {
+      .item:hover, .item:focus-within { font-size: 1em; }
+    }
+
+    .menu {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      z-index: 2;
+      list-style: none;
+      padding-top: .4em;
+      font-size: .82em;
+      white-space: nowrap;
+      pointer-events: none;
+    }
+    .item:hover .menu,
+    .item:focus-within .menu { pointer-events: auto; }
+
+    /* Negatyw: pozycje w odwróconych kolorach. Każda wylatuje osobno po łuku,
+       a po dolocie składają się w jeden panel. */
+    .menu li {
+      line-height: 1.7;
+      padding: 0 .9em;
+      background: var(--fg);
+      color: color-mix(in srgb, var(--bg) 80%, var(--fg));
+      opacity: 0;
+      transform-origin: -40% -260%;
+      transform: rotate(-28deg) scale(.85);
+      transition:
+        transform .55s cubic-bezier(.34, 1.56, .64, 1),
+        opacity .3s ease;
+    }
+    .menu li::before { content: "├─ "; color: var(--accent-inv); opacity: .85; }
+    .menu li:last-child::before { content: "└─ "; }
+    .menu li:first-child { padding-top: .45em; border-radius: 8px 8px 0 0; }
+    .menu li:last-child { padding-bottom: .45em; border-radius: 0 0 8px 8px; }
+
+    .item:hover .menu li,
+    .item:focus-within .menu li {
+      opacity: 1;
+      transform: none;
+    }
+    .item:hover .menu li:nth-child(2), .item:focus-within .menu li:nth-child(2) { transition-delay: .07s; }
+    .item:hover .menu li:nth-child(3), .item:focus-within .menu li:nth-child(3) { transition-delay: .14s; }
+    .item:hover .menu li:nth-child(4), .item:focus-within .menu li:nth-child(4) { transition-delay: .21s; }
+    .item:hover .menu li:nth-child(5), .item:focus-within .menu li:nth-child(5) { transition-delay: .28s; }
+    .item:hover .menu li:nth-child(6), .item:focus-within .menu li:nth-child(6) { transition-delay: .35s; }
+    .item:hover .menu li:nth-child(7), .item:focus-within .menu li:nth-child(7) { transition-delay: .42s; }
+
+    /* Kontakt — główny cel strony: widoczny od razu, e-mail nad telefonem.
+       Ikony z JetBrains Mono Nerd Font (Material Design). */
+    .contact {
+      list-style: none;
+      margin-top: calc(var(--logo) * .2);
+      font-size: max(13px, calc(var(--logo) * .115));
+      line-height: 1.9;
+    }
+    .contact li { position: relative; display: flex; width: fit-content; align-items: baseline; white-space: nowrap; }
+    .contact-link {
+      display: inline-flex;
+      align-items: center;
+      gap: .7em;
+      color: var(--fg);
+      text-decoration: none;
+      transition: color .25s;
+    }
+    .contact-link:hover,
+    .contact-link:focus-visible { color: var(--accent); outline: none; }
+
+    /* Hierarchia: e-mail to główna akcja — jedyny duży element w akcencie.
+       Telefon jest drugim planem w kolorze tekstu (akcent dopiero po najechaniu). */
+    .contact-link.primary { color: var(--accent); }
+    .contact-link.primary:hover,
+    .contact-link.primary:focus-visible {
+      text-decoration: underline;
+      text-decoration-thickness: 1px;
+      text-underline-offset: .25em;
+    }
+    .contact-link:not(.primary) .ico { color: var(--fg); transition: color .25s; }
+    .contact-link:not(.primary):hover .ico,
+    .contact-link:not(.primary):focus-visible .ico { color: var(--accent); }
+
+    /* Podpowiedź nad linią kontaktu — mały dymek w negatywie, jak listy. */
+    .contact-link { position: relative; }
+    .hint {
+      position: absolute;
+      left: -.4em;
+      bottom: calc(100% + .15em);
+      z-index: 3;
+      padding: .1em .6em;
+      border-radius: 6px;
+      background: var(--fg);
+      color: var(--bg);
+      font-size: .78em;
+      line-height: 1.6;
+      white-space: nowrap;
+      pointer-events: none;
+      opacity: 0;
+      transform-origin: 0 100%;
+      transform: translateY(.5em) rotate(-6deg) scale(.85);
+      transition:
+        transform .45s cubic-bezier(.34, 1.56, .64, 1),
+        opacity .2s ease;
+    }
+    .hint::after {
+      content: "";
+      position: absolute;
+      left: .85em;
+      top: 100%;
+      border: .3em solid transparent;
+      border-top-color: var(--fg);
+    }
+    .hint em { font-style: normal; color: var(--accent-inv); }
+    .contact-link:hover .hint,
+    .contact-link:focus-visible .hint {
+      opacity: 1;
+      transform: none;
+    }
+
+    /* Ikona „wysyła”: po najechaniu koperta/słuchawka odlatuje w górę i w prawo,
+       a z dołu z lewej wlatuje ikona wysyłania. Tekst stoi w miejscu. */
+    .contact-link .ico {
+      position: relative;
+      display: inline-grid;
+      width: 1.1em;
+      color: var(--accent);
+    }
+    .ico-idle, .ico-go {
+      grid-area: 1 / 1;
+      text-align: center;
+      transition:
+        transform .45s cubic-bezier(.34, 1.56, .64, 1),
+        opacity .3s ease;
+    }
+    .ico-go { opacity: 0; transform: translate(-.9em, .9em) rotate(-20deg) scale(.6); }
+    .contact-link:hover .ico-idle,
+    .contact-link:focus-visible .ico-idle {
+      opacity: 0;
+      transform: translate(.9em, -.9em) rotate(20deg) scale(.6);
+      transition: transform .35s cubic-bezier(.55, 0, .75, .3), opacity .25s ease .05s;
+    }
+    .contact-link:hover .ico-go,
+    .contact-link:focus-visible .ico-go {
+      opacity: 1;
+      transform: none;
+      transition-delay: .12s;
+    }
+    .copy {
+      position: relative;
+      margin-left: .6em;
+      padding: 0 .3em;
+      border: 0;
+      background: none;
+      font: inherit;
+      color: var(--muted);
+      cursor: pointer;
+      transition: color .25s;
+    }
+    .copy:hover,
+    .copy:focus-visible { color: var(--accent); outline: none; }
+    .copy.done { color: var(--accent); }
+    /* Poza układem — niewidoczny napis nie poszerza bloku kontaktu. */
+    .copied {
+      position: absolute;
+      left: 100%;
+      margin-left: .4em;
+      font-size: .8em;
+      color: var(--accent);
+      opacity: 0;
+      transform: translateX(-.4em);
+      transition: opacity .25s, transform .35s cubic-bezier(.34, 1.56, .64, 1);
+    }
+    .copy.done + .copied { opacity: 1; transform: none; }
+
+    .cursor {
+      display: inline-block;
+      width: .55em;
+      height: .1em;
+      margin-left: .15em;
+      background: var(--accent);
+      opacity: 0;
+      animation: blink 1s steps(1) 2.5s infinite;
+    }
+
+    @keyframes from-right {
+      from { transform: translateX(100vw); }
+      to   { transform: translateX(0); }
+    }
+    @keyframes slide-out {
+      to { transform: translateX(0); }
+    }
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50%      { opacity: 0; }
+    }
+
+    /* Polityka prywatności: link w lewym dolnym rogu, treść w oknie <dialog>. */
+    .privacy-link {
+      position: fixed;
+      bottom: 16px;
+      left: 16px;
+      z-index: 10;
+      padding: 4px 0;
+      border: 0;
+      background: none;
+      font: inherit;
+      font-size: 12px;
+      color: var(--muted);
+      cursor: pointer;
+      transition: color .25s;
+      animation: rise-in .6s cubic-bezier(.34, 1.56, .64, 1) 2.5s both;
+    }
+    .privacy-link:hover,
+    .privacy-link:focus-visible { color: var(--fg); outline: none; text-decoration: underline; text-underline-offset: 3px; }
+
+    .privacy {
+      width: min(640px, calc(100vw - 32px));
+      max-height: min(80vh, 720px);
+      margin: auto;
+      padding: 0;
+      border: 1px solid color-mix(in srgb, var(--fg) 15%, transparent);
+      border-radius: 12px;
+      background: var(--bg);
+      color: var(--fg);
+      font-size: 13px;
+      line-height: 1.65;
+    }
+    .privacy::backdrop {
+      background: color-mix(in srgb, #1d1c1a 50%, transparent);
+      backdrop-filter: blur(3px);
+    }
+    .privacy[open] { animation: pop .45s cubic-bezier(.34, 1.56, .64, 1); }
+    .privacy-body { padding: 28px 28px 24px; }
+    .privacy h2 { font-size: 16px; margin-bottom: 16px; }
+    .privacy h3 { font-size: 13px; margin: 18px 0 4px; }
+    .privacy p, .privacy li { color: var(--muted); }
+    .privacy ul { padding-left: 1.2em; }
+    .privacy a { color: var(--fg); text-decoration-color: var(--accent); text-underline-offset: 3px; }
+    .privacy a:hover { color: var(--accent); }
+    .privacy-close {
+      position: sticky;
+      top: 0;
+      float: right;
+      margin: 12px 12px 0 0;
+      width: 32px;
+      height: 32px;
+      border: 0;
+      border-radius: 50%;
+      background: none;
+      font: inherit;
+      font-size: 18px;
+      color: var(--muted);
+      cursor: pointer;
+    }
+    .privacy-close:hover,
+    .privacy-close:focus-visible { color: var(--fg); outline: none; }
+
+    /* Easter egg: znaczek 24/7 w prawym dolnym rogu, po kliknięciu dymek. */
+    .egg {
+      position: fixed;
+      right: 16px;
+      bottom: 16px;
+      z-index: 10;
+      /* Pojawia się dopiero po intro (logo + wysunięcie tekstu kończą się ok. 2,4 s). */
+      animation: egg-in .6s cubic-bezier(.34, 1.56, .64, 1) 2.6s both;
+    }
+    .egg-badge {
+      display: block;
+      padding: 4px;
+      border: 0;
+      background: none;
+      font: inherit;
+      color: var(--muted);
+      opacity: .55;
+      cursor: pointer;
+      transition: opacity .25s, color .25s, transform .4s cubic-bezier(.34, 1.56, .64, 1);
+    }
+    .egg-badge svg { display: block; width: 52px; height: auto; overflow: visible; }
+
+    /* Przewijanie (kółko / gest) zaczepia znaczek: podskakuje i lekko rośnie. */
+    .egg-badge.nudge { opacity: .9; color: var(--accent); }
+    .egg-badge.nudge svg { animation: nudge .7s cubic-bezier(.34, 1.56, .64, 1); }
+    @keyframes nudge {
+      0%   { transform: none; }
+      30%  { transform: translateY(-14px) scale(1.25) rotate(-6deg); }
+      55%  { transform: translateY(0) scale(.95); }
+      75%  { transform: translateY(-5px) scale(1.08) rotate(3deg); }
+      100% { transform: none; }
+    }
+    .egg-badge text { font-family: inherit; font-weight: 400; }
+    .egg-badge:hover,
+    .egg-badge:focus-visible,
+    .egg-badge[aria-expanded="true"] {
+      opacity: 1;
+      color: var(--accent);
+      outline: none;
+      transform: rotate(-6deg) scale(1.08);
+    }
+
+    .egg-bubble {
+      position: absolute;
+      right: 4px;
+      bottom: calc(100% + 10px);
+      width: max-content;
+      max-width: min(280px, calc(100vw - 32px));
+      padding: 10px 14px;
+      border: 1px solid color-mix(in srgb, var(--fg) 15%, transparent);
+      border-radius: 12px 12px 2px 12px;
+      background: var(--bg);
+      font-size: 12px;
+      line-height: 1.5;
+      color: var(--fg);
+      opacity: 0;
+      pointer-events: none;
+      transform-origin: 140% 160%;
+      transform: rotate(18deg) scale(.8);
+      transition:
+        transform .55s cubic-bezier(.34, 1.56, .64, 1),
+        opacity .25s ease;
+    }
+    .egg.open .egg-bubble {
+      opacity: 1;
+      pointer-events: auto;
+      transform: none;
+    }
+
+    /* Elementy w rogach wchodzą po intro, jeden po drugim. */
+    @keyframes drop-in {
+      from { opacity: 0; transform: translateY(-24px); }
+      to   { opacity: 1; transform: none; }
+    }
+    @keyframes rise-in {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: none; }
+    }
+    @keyframes egg-in {
+      from { opacity: 0; transform: translateY(24px) rotate(12deg) scale(.6); }
+      to   { opacity: 1; transform: none; }
+    }
+    @keyframes pop {
+      from { opacity: 0; transform: translateY(12px) scale(.96); }
+    }
+
+    /* Telefon: logo u góry, reszta wyśrodkowana pod nim. Tekst wysuwa się
+       spod logo w dół (przycięta jest górna krawędź zamiast lewej). */
+    @media (max-width: 600px) {
+      :root { --logo: clamp(84px, 26vw, 130px); }
+      main {
+        grid-template-columns: auto;
+        grid-template-rows: auto auto;
+        justify-items: center;
+        row-gap: 22px;
+      }
+      .reveal { clip-path: inset(0 -100vw -100vh -100vw); }
+      .text {
+        padding-left: 0;
+        text-align: center;
+        transform: translateY(-100%);
+      }
+      .name { font-size: min(calc(var(--logo) * .3), 7.6vw); margin-top: 0; }
+      .role {
+        width: auto;
+        min-width: 0;
+        max-width: calc(100vw - 32px);
+        margin-top: 10px;
+        --role-size: 12px;
+      }
+      /* Kontakt jako jeden blok wyśrodkowany, linie wyrównane do lewej. */
+      .contact { display: inline-block; margin-top: 22px; font-size: min(15px, 4.4vw); text-align: left; }
+      .menu { text-align: left; }
+      /* Brak miejsca z prawej — „skopiowano” wyskakuje nad ikonką kopiowania. */
+      .copied { left: auto; right: 0; bottom: 100%; margin-left: 0; line-height: 1; }
+    }
+
+    /* Bez intro: wszystko od razu na swoim miejscu. */
+    .no-intro .logo, .no-intro .text,
+    .no-intro .controls, .no-intro .privacy-link, .no-intro .egg { animation: none; transform: none; }
+    .no-intro .cursor { animation-delay: 0s; }
+
+    @media (prefers-reduced-motion: reduce) {
+      .privacy[open] { animation: none; }
+      .egg-badge, .egg-bubble { transition: none; }
+      .egg, .controls, .privacy-link { animation: none; }
+      .egg-badge.nudge svg { animation: none; }
+      .ico-idle, .ico-go { transition: opacity .2s; transform: none !important; }
+      .hint { transition: opacity .2s; transform: none; }
+      .logo, .text { animation: none; transform: none; }
+      .item, .menu li, body, .theme-toggle, .theme-toggle svg { transition: none; }
+      .cursor { animation: none; opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+  <nav class="controls">
+  <div class="lang" role="group" aria-label="Language">
+    <a href="pl/" hreflang="pl" lang="pl" data-lang="pl">pl</a>
+    <span class="sep">/</span>
+    <a href="./" hreflang="en" lang="en" data-lang="en" aria-current="page">en</a>
+  </div>
+  <button class="theme-toggle" type="button" aria-label="Toggle light / dark theme">
+    <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/>
+    </svg>
+    <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <circle cx="12" cy="12" r="4"/>
+      <path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>
+    </svg>
+  </button>
+  </nav>
+  <main>
+    <div class="logo">
+      <svg class="mark" viewBox="0 0 84.937576 90.064362" role="img" aria-label="KG logo">
+        <g transform="translate(-49.415152,-87.284949)">
+          <path class="g" d="M 134.07535,119.18564 104.2089,87.284949 68.979451,116.41167 v 24.876 l 35.969179,35.96918 29.4041,-28.84932 V 132.60519 H 95.979451 l 8.153989,13.23541 h 15.60971 l -13.74323,13.60453 -23.428003,-23.42801 v -14.6123 l 20.111303,-16.22775 12.6626,13.73117 z"/>
+          <path class="bar" d="M 64.964982,87.472602 V 177.34931 L 49.415152,165.14694 V 100.60066 Z"/>
+        </g>
+      </svg>
+    </div>
+    <div class="reveal">
+      <div class="text">
+        <h1 class="name">Christopher Grabski</h1>
+        <div class="role"><span class="item" tabindex="0"><span>software&nbsp;architect</span><ul class="menu">
+            <li>spa applications</li>
+            <li>web3</li>
+            <li>websites</li>
+          </ul></span>&nbsp;<span class="sep">/</span> <span class="item" tabindex="0">fullstack<ul class="menu">
+            <li>next.js</li>
+            <li>react</li>
+            <li>nestjs</li>
+            <li>express</li>
+            <li>javascript</li>
+          </ul></span>&nbsp;<span class="sep">/</span> <span class="item" tabindex="0">devops<ul class="menu">
+            <li>maintenance</li>
+            <li>aws</li>
+            <li>ci/cd</li>
+            <li>docker</li>
+            <li>monitoring</li>
+            <li>domains &amp; dns</li>
+          </ul></span></div>
+        <ul class="contact">
+          <li>
+            <a class="contact-link primary" href="mailto:chris.grabski.dev@gmail.com"><span class="ico" aria-hidden="true"><span class="ico-idle">&#xF01EE;</span><span class="ico-go">&#xF048A;</span></span><span>chris.grabski.dev@gmail.com</span><span class="hint">send me an email <em>(preferred)</em></span></a><span class="cursor" aria-hidden="true"></span>
+            <button class="copy" type="button" data-copy="chris.grabski.dev@gmail.com" aria-label="Copy email address"><span class="ico" aria-hidden="true">&#xF018F;</span></button>
+            <span class="copied" role="status">copied</span>
+          </li>
+          <li>
+            <a class="contact-link" href="tel:+48517499860"><span class="ico" aria-hidden="true"><span class="ico-idle">&#xF03F2;</span><span class="ico-go">&#xF03F6;</span></span><span>+48&nbsp;517&nbsp;499&nbsp;860</span><span class="hint">give me a call</span></a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </main>
+
+  <button class="privacy-link" type="button">privacy policy</button>
+  <div class="egg">
+    <div class="egg-bubble" id="egg-bubble" role="status">I'm like a corner shop: open 24/7, but I don't strike a deal with everyone ;)</div>
+    <button class="egg-badge" type="button" aria-expanded="false" aria-controls="egg-bubble" aria-label="24/7">
+      <svg viewBox="0 0 99.679115 36.202412" aria-hidden="true">
+        <g transform="translate(-60.7528,-115.19324)">
+          <text x="69.590057" y="145.57976" font-size="34.1259" fill="currentColor">24/7</text>
+          <rect x="61.7528" y="116.19324" width="97.679115" height="34.202412" ry="6.5081778"
+                fill="none" stroke="currentColor" stroke-width="2"/>
+        </g>
+      </svg>
+    </button>
+  </div>
+
+  <dialog class="privacy" aria-labelledby="privacy-title">
+    <button class="privacy-close" type="button" aria-label="Close">×</button>
+    <div class="privacy-body">
+      <h2 id="privacy-title">Privacy policy</h2>
+      <p>This site uses no cookies, collects no analytics and shows no ads.</p>
+
+      <h3>Data controller</h3>
+      <p>Krzysztof Grabski, contact: <a href="mailto:chris.grabski.dev@gmail.com">chris.grabski.dev@gmail.com</a>.</p>
+
+      <h3>What data is processed</h3>
+      <p>Visiting the site does not store any personal data on my side. The site is hosted on GitHub Pages
+        (GitHub, Inc., USA), which may keep technical server logs (IP address, browser, request time) under
+        its own policy — I have no access to them.</p>
+      <p>If you email or call me, I process your email address or phone number and your enquiry to reply
+        (Art. 6(1)(b) and (f) GDPR) and keep them for as long as the contact requires.
+        Email is handled by Gmail (Google LLC, USA).</p>
+
+      <h3>Browser storage</h3>
+      <p>localStorage holds only your chosen theme and language. These settings never leave your browser.
+        Fonts are hosted with the site, so nothing is sent to third-party providers.</p>
+
+      <h3>Your rights</h3>
+      <p>You have the right to access, rectify, erase, restrict and port your data, to object to processing,
+        and to lodge a complaint with the Polish supervisory authority, UODO
+        (<a href="https://uodo.gov.pl" rel="noopener" target="_blank">uodo.gov.pl</a>).
+        Email <a href="mailto:chris.grabski.dev@gmail.com">chris.grabski.dev@gmail.com</a>.</p>
+    </div>
+  </dialog>
+  <script>
+    // Polityka prywatności: otwieranie, zamykanie przyciskiem i kliknięciem w tło (Esc działa natywnie).
+    (() => {
+      const dialog = document.querySelector(".privacy");
+      document.querySelector(".privacy-link").addEventListener("click", () => dialog.showModal());
+      dialog.querySelector(".privacy-close").addEventListener("click", () => dialog.close());
+      dialog.addEventListener("click", (e) => { if (e.target === dialog) dialog.close(); });
+    })();
+
+    // Easter egg 24/7: klik pokazuje/chowa dymek, klik obok lub Esc go zamyka.
+    (() => {
+      const egg = document.querySelector(".egg");
+      const badge = egg.querySelector(".egg-badge");
+      const toggle = (open) => {
+        egg.classList.toggle("open", open);
+        badge.setAttribute("aria-expanded", String(open));
+      };
+      badge.addEventListener("click", () => toggle(!egg.classList.contains("open")));
+      document.addEventListener("click", (e) => { if (!egg.contains(e.target)) toggle(false); });
+      document.addEventListener("keydown", (e) => { if (e.key === "Escape") toggle(false); });
+
+      // Zaczepka przy przewijaniu: najwyżej raz na 1,2 s, dopiero po intro.
+      if (!matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        let ready = false, last = 0, timer;
+        setTimeout(() => { ready = true; },
+          document.documentElement.classList.contains("no-intro") ? 0 : 3300);
+        const nudge = () => {
+          const now = Date.now();
+          if (!ready || now - last < 1200 || egg.classList.contains("open")) return;
+          last = now;
+          badge.classList.remove("nudge");
+          void badge.offsetWidth; // restart animacji
+          badge.classList.add("nudge");
+          clearTimeout(timer);
+          timer = setTimeout(() => badge.classList.remove("nudge"), 900);
+        };
+        addEventListener("wheel", nudge, { passive: true });
+        addEventListener("touchmove", nudge, { passive: true });
+      }
+    })();
+
+    // Kopiowanie e-maila: ikona zmienia się na ✓ i na chwilę pojawia się „skopiowano”.
+    (() => {
+      const btn = document.querySelector(".copy");
+      const icon = btn.querySelector(".ico");
+      let timer;
+      btn.addEventListener("click", async () => {
+        try { await navigator.clipboard.writeText(btn.dataset.copy); } catch (e) { return; }
+        btn.classList.add("done");
+        icon.innerHTML = "&#xF012C;";
+        clearTimeout(timer);
+        timer = setTimeout(() => { btn.classList.remove("done"); icon.innerHTML = "&#xF018F;"; }, 1800);
+      });
+    })();
+
+    // Język: każda wersja ma własny adres (/ = en, /pl/ = pl). Kliknięcie
+    // zapamiętuje wybór, żeby strona główna już nie przekierowywała.
+    document.querySelectorAll(".lang a").forEach((a) => a.addEventListener("click", () => {
+      try { localStorage.setItem("lang", a.dataset.lang); } catch (e) {}
+    }));
+
+    // Przełącznik motywu: odwraca aktualny wygląd. Jeśli wybór pokrywa się
+    // z ustawieniem systemu, zapomina go — strona znów podąża za systemem.
+    (() => {
+      const root = document.documentElement;
+      const sys = matchMedia("(prefers-color-scheme: dark)");
+      document.querySelector(".theme-toggle").addEventListener("click", () => {
+        const current = root.dataset.theme || (sys.matches ? "dark" : "light");
+        const next = current === "dark" ? "light" : "dark";
+        const isSystem = next === (sys.matches ? "dark" : "light");
+        if (isSystem) delete root.dataset.theme; else root.dataset.theme = next;
+        try {
+          if (isSystem) localStorage.removeItem("theme"); else localStorage.setItem("theme", next);
+        } catch (e) {}
+      });
+    })();
+
+    (() => {
+      if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+      const logo = document.querySelector(".logo");
+      let tx = 0, ty = 0, x = 0, y = 0, raf = 0;
+
+      const tick = () => {
+        x += (tx - x) * 0.08;
+        y += (ty - y) * 0.08;
+        logo.style.setProperty("--mx", x.toFixed(4));
+        logo.style.setProperty("--my", y.toFixed(4));
+        raf = Math.abs(tx - x) + Math.abs(ty - y) > 0.0005 ? requestAnimationFrame(tick) : 0;
+      };
+      const aim = (nx, ny) => {
+        tx = Math.max(-1, Math.min(1, nx));
+        ty = Math.max(-1, Math.min(1, ny));
+        if (!raf) raf = requestAnimationFrame(tick);
+      };
+
+      // Pozycja względem środka logo, znormalizowana do połowy okna.
+      addEventListener("pointermove", (e) => {
+        if (e.pointerType === "touch") return;
+        const r = logo.getBoundingClientRect();
+        aim((e.clientX - (r.left + r.width / 2)) / (innerWidth / 2),
+            (e.clientY - (r.top + r.height / 2)) / (innerHeight / 2));
+      });
+      document.documentElement.addEventListener("pointerleave", () => aim(0, 0));
+      addEventListener("blur", () => aim(0, 0));
+    })();
+  </script>
+</body>
+</html>

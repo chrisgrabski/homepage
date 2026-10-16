@@ -1,0 +1,9 @@
+{
+  "name": "homepage",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node build.mjs",
+    "images": "node src/make_images.mjs"
+  }
+}
